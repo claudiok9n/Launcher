@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -15,14 +17,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.animation;
+
 public class home_view extends AppCompatActivity {
     private PackageManager manager;
     private List<GridHomeDetail> apps;
+    private Animation lala;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        overridePendingTransition(R.anim.right_out, R.anim.right_out);
+        lala = AnimationUtils.loadAnimation(this, R.anim.right_out);
         loadApps();
         loadGridView();
     }
@@ -58,7 +65,7 @@ public class home_view extends AppCompatActivity {
 
                 ImageView appIcon = (ImageView)convertView.findViewById(R.id.item_app_icon);
                 appIcon.setImageDrawable(apps.get(position).icon);
-
+                appIcon.startAnimation(lala);
                 TextView appLabel = (TextView)convertView.findViewById(R.id.item_app_label);
                 appLabel.setText(apps.get(position).label);
 
