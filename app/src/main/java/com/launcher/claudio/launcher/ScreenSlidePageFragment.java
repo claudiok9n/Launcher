@@ -11,6 +11,7 @@ public class ScreenSlidePageFragment extends Fragment {
 
     //Key to insert the index page into the mapping of a Bundle.
     private static final String INDEX = "index";
+    private GridHomeDetail appList = new GridHomeDetail();
 
     public static ScreenSlidePageFragment newInstance(int index) {
 
@@ -30,13 +31,15 @@ public class ScreenSlidePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        GridAdapter adapter = null;
         //Agrego el GridView al PageView
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.grid_home, container, false);
 
         //Creo un adapter para agregar las views al GridView
         GridView grid = (GridView) rootView.findViewById(R.id.apps_grid);
-        GridAdapter adapter = new GridAdapter(this.getContext(), new main_view().GetAvailableApps());
+        for(int i=0; i < appList.GetCountPages(); i++){
+            adapter = new GridAdapter(this.getContext(), new GridHomeDetail().GetAvailableAppsByPage(i));
+        }
         grid.setAdapter(adapter);
 
         return rootView;

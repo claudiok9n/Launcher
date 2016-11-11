@@ -56,8 +56,8 @@ public class GridAdapter extends BaseAdapter {
         holder.tv=(TextView) rowView.findViewById(R.id.item_app_label);
         holder.img=(ImageView) rowView.findViewById(R.id.item_app_icon);
 
-        holder.tv.setText(apps.get(position).label);
-        holder.img.setImageDrawable(apps.get(position).icon);
+        holder.tv.setText(apps.get(position).getLabel());
+        holder.img.setImageDrawable(apps.get(position).getIcon());
 
         /*rowView.setOnClickListener(new OnClickListener() {
 

@@ -15,7 +15,7 @@ public class main_view extends FragmentActivity {
     FragmentPagerAdapter pagerAdapter;
 
     private PackageManager manager;
-    private static List<GridHomeDetail> apps;
+    private GridHomeDetail appList = new GridHomeDetail();
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -30,11 +30,9 @@ public class main_view extends FragmentActivity {
 
         // Create an adapter with the fragments we show on the ViewPager
         FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(ScreenSlidePageFragment.newInstance(0));
-        adapter.addFragment(ScreenSlidePageFragment.newInstance(1));
-        adapter.addFragment(ScreenSlidePageFragment.newInstance(2));
-        adapter.addFragment(ScreenSlidePageFragment.newInstance(3));
-        adapter.addFragment(ScreenSlidePageFragment.newInstance(4));
+        for(int i=0; i < appList.GetCountPages(); i++){
+            adapter.addFragment(ScreenSlidePageFragment.newInstance(i));
+        }
         this.pager.setAdapter(adapter);
 
     }
@@ -49,24 +47,25 @@ public class main_view extends FragmentActivity {
     }
 
     public void loadApps(){
+        GridHomeDetail app = null;
         manager = getPackageManager();
-        apps = new ArrayList<GridHomeDetail>();
 
         Intent i = new Intent(Intent.ACTION_MAIN, null);
         i.addCategory(Intent.CATEGORY_LAUNCHER);
 
         List<ResolveInfo> availableActivities = manager.queryIntentActivities(i, 0);
+        int count = 0;
+        int page = 0;
         for(ResolveInfo ri:availableActivities){
-            GridHomeDetail app = new GridHomeDetail();
-            app.label = ri.loadLabel(manager);
-            app.name = ri.activityInfo.packageName;
-            app.icon = ri.activityInfo.loadIcon(manager);
-            apps.add(app);
+            if (count<10)
+                page = 0;
+            else
+                page = 1;
+            app = new GridHomeDetail(ri.loadLabel(manager), ri.activityInfo.packageName, ri.activityInfo.loadIcon(manager), page);
+            app.addApp(app);
+            count++;
         }
-    }
-
-    public List<GridHomeDetail> GetAvailableApps(){
-        return apps;
+        app.setAppByPage();
     }
 
 }
