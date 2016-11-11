@@ -1,27 +1,16 @@
 package com.launcher.claudio.launcher;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.GridView;
 
 public class ScreenSlidePageFragment extends Fragment {
 
-    /**
-     * Key to insert the background color into the mapping of a Bundle.
-     */
-    private static final String BACKGROUND_COLOR = "color";
-
-    /**
-     * Key to insert the index page into the mapping of a Bundle.
-     */
+    //Key to insert the index page into the mapping of a Bundle.
     private static final String INDEX = "index";
-
-    private int color;
-    private int index;
 
     public static ScreenSlidePageFragment newInstance(int index) {
 
@@ -30,7 +19,6 @@ public class ScreenSlidePageFragment extends Fragment {
 
         // Save the parameters
         Bundle bundle = new Bundle();
-        //bundle.putInt(BACKGROUND_COLOR, color);
         bundle.putInt(INDEX, index);
         fragment.setArguments(bundle);
         fragment.setRetainInstance(true);
@@ -40,31 +28,16 @@ public class ScreenSlidePageFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // Load parameters when the initial creation of the fragment is done
-        this.color = (getArguments() != null) ? getArguments().getInt(
-                BACKGROUND_COLOR) : Color.GRAY;
-        this.index = (getArguments() != null) ? getArguments().getInt(INDEX)
-                : -1;
-
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //Agrego el GridView al PageView
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.grid_home, container, false);
 
-
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.home, container, false);
-
-        // Show the current page index in the view
-        TextView tvIndex = (TextView) rootView.findViewById(R.id.tvIndex);
-        tvIndex.setText(String.valueOf(this.index));
-
-        // Change the background color
-        rootView.setBackgroundColor(this.color);
+        //Creo un adapter para agregar las views al GridView
+        GridView grid = (GridView) rootView.findViewById(R.id.apps_grid);
+        GridAdapter adapter = new GridAdapter(this.getContext(), new main_view().GetAvailableApps());
+        grid.setAdapter(adapter);
 
         return rootView;
 

@@ -1,23 +1,21 @@
-package com.launcher.claudio.launcher.MyFragmentPagerAdapter;
+package com.launcher.claudio.launcher;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
-public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
 
     // List of fragments which are going to set in the view pager widget
-    List<Fragment> fragments;
+    private List<Fragment> fragments;
 
-    public MyFragmentPagerAdapter(FragmentManager fm) {
+    public FragmentPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.fragments = new ArrayList<Fragment>();
+        this.fragments = new ArrayList<>();
     }
 
-    //Add a new fragment in the list.
+    //Add a new fragment in the list
     public void addFragment(Fragment fragment) {
         this.fragments.add(fragment);
     }
