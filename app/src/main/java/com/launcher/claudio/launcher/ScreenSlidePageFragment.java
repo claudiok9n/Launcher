@@ -10,21 +10,34 @@ import android.widget.GridView;
 public class ScreenSlidePageFragment extends Fragment {
 
     //Key to insert the index page into the mapping of a Bundle.
-    private static final String INDEX = "index";
+    private static final String PAGENUMBER = "pagenumber";
+
+    private int pageNumber;
+
     private GridHomeDetail appList = new GridHomeDetail();
 
-    public static ScreenSlidePageFragment newInstance(int index) {
+    public static ScreenSlidePageFragment newInstance(int _pageNumber) {
 
         // Instantiate a new fragment
         ScreenSlidePageFragment fragment = new ScreenSlidePageFragment();
 
         // Save the parameters
         Bundle bundle = new Bundle();
-        bundle.putInt(INDEX, index);
+        bundle.putInt(PAGENUMBER, _pageNumber);
         fragment.setArguments(bundle);
         fragment.setRetainInstance(true);
 
         return fragment;
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Load parameters when the initial creation of the fragment is done
+        this.pageNumber = (getArguments() != null) ? getArguments().getInt(PAGENUMBER)
+                : -1;
 
     }
 
@@ -37,9 +50,9 @@ public class ScreenSlidePageFragment extends Fragment {
 
         //Creo un adapter para agregar las views al GridView
         GridView grid = (GridView) rootView.findViewById(R.id.apps_grid);
-        for(int i=0; i < appList.GetCountPages(); i++){
-            adapter = new GridAdapter(this.getContext(), new GridHomeDetail().GetAvailableAppsByPage(i));
-        }
+
+        adapter = new GridAdapter(this.getContext(), new GridHomeDetail().GetAvailableAppsByPage(this.pageNumber));
+
         grid.setAdapter(adapter);
 
         return rootView;
